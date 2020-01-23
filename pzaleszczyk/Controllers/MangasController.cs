@@ -103,7 +103,7 @@ namespace pzaleszczyk.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Name", manga.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Fullname", manga.AuthorId);
             return View(manga);
         }
 
@@ -121,7 +121,7 @@ namespace pzaleszczyk.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Name", manga.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Fullname", manga.AuthorId);
             return View(manga);
         }
 
@@ -158,7 +158,7 @@ namespace pzaleszczyk.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Name", manga.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Fullname", manga.AuthorId);
             return View(manga);
         }
 

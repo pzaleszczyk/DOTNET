@@ -77,7 +77,7 @@
        index++;
     }
     var random = new Random().Next(index);
-
+    if(index > 0)
     await Html.RenderPartialAsync("_IndexXPartial", Model,
         new ViewDataDictionary(ViewData) { { "index", random } }
     );

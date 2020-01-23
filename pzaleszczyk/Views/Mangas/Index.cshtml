@@ -79,12 +79,12 @@
                 <td>
                     @if ((await AuthorizationService.AuthorizeAsync(User, "EditPolicy")).Succeeded)
                     {
-                        <u><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></u>
+                        <u><a asp-action="Edit"  asp-route-author="@item.Author.Fullname" asp-route-id="@item.Id">Edit</a></u>
                         <br />
-                        <u><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></u>
+                        <u><a asp-action="Delete" asp-route-author="@item.Author.Fullname" asp-route-id="@item.Id">Delete</a></u>
                         <br />
                     }
-                    <u><a asp-action="Details" asp-route-id="@item.Id">Details</a></u>
+                    <u><a asp-action="Details" asp-route-author="@item.Author.Fullname" asp-route-id="@item.Id">Details</a></u>
                 </td>
             </tr>
         }

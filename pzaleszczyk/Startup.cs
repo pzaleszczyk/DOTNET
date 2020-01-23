@@ -110,6 +110,11 @@ namespace pzaleszczyk
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "genreRouting",
+                    pattern: "{controller}/{action}/{id?}/{author?}",
+                    defaults: new { controller = "Manga", action = "Index" });
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
@@ -118,7 +123,6 @@ namespace pzaleszczyk
           
             CreateRoles(services).Wait();
             
-           // HttpContext.Session.SetString("ciasteczko", "");
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
@@ -137,12 +141,6 @@ namespace pzaleszczyk
                 roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
             }
 
-            roleCheck = await RoleManager.RoleExistsAsync("Test");
-            if (!roleCheck)
-            {
-                //here in this line we are creating admin role and seed it to the database
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Test"));
-            }
 
             //here we are assigning the Admin role to the User that we have registered above 
             //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
