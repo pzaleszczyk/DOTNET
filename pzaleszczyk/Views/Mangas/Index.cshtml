@@ -89,20 +89,4 @@
     </tbody>
 </table>
 
-@await Html.PartialAsync("_IndexPartial", Model.Mangas[0].Title)
-
-@{
-    //RenderPartialAsync. Ta metoda nie zwraca elementu IHtmlContent. Przesyła strumieniowo renderowane dane wyjściowe bezpośrednio do odpowiedzi.
-    var index = 0;
-    foreach (var section in Model.Mangas)
-    {
-        await Html.RenderPartialAsync("_IndexXPartial", section,
-            new ViewDataDictionary(ViewData) {
-                    { "index", index }
-                                            });
-
-        index++;
-    }
-}
-
-<!--@if ((await AuthorizationService.AuthorizeAsync(User, null, "RequireAuthenticatedUser")).Succeeded)-->
+<!---@if ((await AuthorizationService.AuthorizeAsync(User, null, "RequireAuthenticatedUser")).Succeeded)-->

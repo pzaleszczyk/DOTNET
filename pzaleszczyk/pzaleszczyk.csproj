@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Mangas\_IndexXPartial.cshtml" />
     <Content Remove="wwwroot\lib\main_styles.css" />
     <Content Remove="wwwroot\lib\simple-sidebar.css" />
   </ItemGroup>

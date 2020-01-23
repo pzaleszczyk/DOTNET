@@ -28,12 +28,15 @@ namespace pzaleszczyk.Controllers
         //    return View(await applicationDbContext.ToListAsync());
         //}
 
+        
+
         public async Task<IActionResult> Index(string mangaGenre, string searchString)
         {
             //System.Diagnostics.Debug.WriteLine(System.Reflection.Assembly.GetExecutingAssembly());
+            System.Diagnostics.Debug.WriteLine("Boom");
             //LINQ
             IQueryable<string> genreQuery = from m in _context.Manga
-                                            orderby m.Genre
+                                            orderby m.ReleaseDate
                                             select m.Genre;
 
             var mangas = from m in _context.Manga
@@ -79,9 +82,10 @@ namespace pzaleszczyk.Controllers
         }
 
         // GET: Mangas/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Name");
+            ViewData["AuthorId"] = new SelectList(_context.Set<Author>(), "Id", "Fullname");
             return View();
         }
 
@@ -90,6 +94,7 @@ namespace pzaleszczyk.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,AuthorId,Genre,Rating,Price")] Manga manga)
         {
             if (ModelState.IsValid)
@@ -103,6 +108,7 @@ namespace pzaleszczyk.Controllers
         }
 
         // GET: Mangas/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -124,6 +130,7 @@ namespace pzaleszczyk.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,AuthorId,Genre,Rating,Price")] Manga manga)
         {
             if (id != manga.Id)
@@ -156,6 +163,7 @@ namespace pzaleszczyk.Controllers
         }
 
         // GET: Mangas/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,6 +185,7 @@ namespace pzaleszczyk.Controllers
         // POST: Mangas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var manga = await _context.Manga.FindAsync(id);

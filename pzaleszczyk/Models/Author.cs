@@ -24,6 +24,10 @@ namespace pzaleszczyk.Models
         [Required]
         public string Surname { get; set; }
 
+        public string Fullname {
+            get { return Name + " " + Surname; }
+        }
+
         public ICollection<Manga> Mangas { get; set; }
 
         [StringLength(60, MinimumLength = 3)]

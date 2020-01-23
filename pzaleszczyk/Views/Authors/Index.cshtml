@@ -18,16 +18,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Surname)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SurNameSortParm"]">@Html.DisplayNameFor(model => model.Surname)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Website)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Birthday)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.Birthday)</a>
             </th>
             <th></th>
         </tr>
@@ -60,3 +60,24 @@
         }
     </tbody>
 </table>
+
+
+    @*@await Html.PartialAsync("_IndexPartial", Model.Mangas[0].Title)*@
+
+
+
+@{
+    //RenderPartialAsync. Ta metoda nie zwraca elementu IHtmlContent. Przesyła strumieniowo renderowane dane wyjściowe bezpośrednio do odpowiedzi.
+    int index = 0;
+   
+    foreach (var section in Model)
+    {
+       index++;
+    }
+    var random = new Random().Next(index);
+
+    await Html.RenderPartialAsync("_IndexXPartial", Model,
+        new ViewDataDictionary(ViewData) { { "index", random } }
+    );
+
+}

@@ -22,9 +22,44 @@ namespace pzaleszczyk.Controllers
         }
 
         // GET: Authors
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Author.ToListAsync());
+        //}
+
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Author.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "DateDesc" : "Date";
+            ViewData["SurnameSortParm"] = sortOrder == "Surname" ? "SurnameDesc" : "Surname";
+
+            var st = from s in _context.Author
+                         select s;
+            switch (sortOrder)
+            {
+                case "Name":
+                    st = st.OrderByDescending(s => s.Name);
+                    break;
+                case "Surname":
+                    st = st.OrderBy(s => s.Surname);
+                    break;
+                case "SurnameDesc":
+                    st = st.OrderByDescending(s => s.Surname);
+                    break;
+                case "Website":
+                    st = st.OrderBy(s => s.Website);
+                    break;
+                case "Date":
+                    st = st.OrderBy(s => s.Birthday);
+                    break;
+                case "DateDesc":
+                    st = st.OrderByDescending(s => s.Birthday);
+                    break;
+                default:
+                    st = st.OrderBy(s => s.Name);
+                    break;
+            }
+            return View(await st.AsNoTracking().ToListAsync());
         }
 
         // GET: Authors/Details/5

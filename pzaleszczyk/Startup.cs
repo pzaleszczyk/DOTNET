@@ -50,7 +50,7 @@ namespace pzaleszczyk
             .AddDefaultTokenProviders()
             .AddDefaultUI();
 
-            
+
 
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             //.AddRazorPagesOptions(options =>
@@ -70,6 +70,16 @@ namespace pzaleszczyk
             ////using Microsoft.AspNetCore.Identity.UI.Services;
             //services.AddSingleton<IEmailSender, EmailSender>();
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -115,6 +125,9 @@ namespace pzaleszczyk
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
 
+            
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -133,7 +146,7 @@ namespace pzaleszczyk
             
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,0 +1,15 @@
+﻿
+@model IEnumerable<pzaleszczyk.Models.Author>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h4>Trivia: </h4>
+
+
+<h3>
+    @Model.ElementAt((int)ViewData["index"]).Surname @Model.ElementAt((int)ViewData["index"]).Name is
+    @(DateTime.Now.Year - Model.ElementAt((int)ViewData["index"]).Birthday.Year-1)
+    
+    years old
+</h3>
