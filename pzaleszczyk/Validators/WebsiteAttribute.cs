@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace pzaleszczyk.Validators
 {
+    [AttributeUsage(AttributeTargets.All)]
     public class WebsiteAttribute : ValidationAttribute
     {
-        //Error message
-        public string GetErrorMessage() =>
-            $"Set correct website address.";
-
         protected override ValidationResult IsValid(object value,
                    ValidationContext validationContext)
         {
@@ -21,7 +18,7 @@ namespace pzaleszczyk.Validators
             var regex = @"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$";
             var match = Regex.Match(website, regex);
             if (!match.Success)
-                return new ValidationResult("Podaj adres w poprawnym formacie! http://name.domain/... ");
+                return new ValidationResult("Podaj adres w poprawnym formacie! http://name.com/... ");
             else
                 return ValidationResult.Success;
         }

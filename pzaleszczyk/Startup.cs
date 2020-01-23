@@ -50,64 +50,28 @@ namespace pzaleszczyk
             .AddDefaultTokenProviders()
             .AddDefaultUI();
 
-
-
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            //.AddRazorPagesOptions(options =>
-            //{
-            //    //options.AllowAreas = true;
-            //    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-            //    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-            //});
-
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    options.LoginPath = $"/Identity/Account/Login";
-            //    options.LogoutPath = $"/Identity/Account/Logout";
-            //    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
-            //});
-
-            ////using Microsoft.AspNetCore.Identity.UI.Services;
-            //services.AddSingleton<IEmailSender, EmailSender>();
-
             services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
+                options.IdleTimeout = TimeSpan.FromSeconds(5);
+                //options.Cookie.HttpOnly = true;
                 // Make the session cookie essential
-                options.Cookie.IsEssential = true;
+                //options.Cookie.IsEssential = true;
+                options.Cookie.Name = "Ciastko";
             });
 
+            services.AddMvc()
+               .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+               .AddSessionStateTempDataProvider();
+
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("EditPolicy", policy => policy.RequireRole("Admin"));
             });
-
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    // Password settings.
-            //    options.Password.RequireDigit = true;
-            //    options.Password.RequireLowercase = true;
-            //    options.Password.RequireNonAlphanumeric = true;
-            //    options.Password.RequireUppercase = true;
-            //    options.Password.RequiredLength = 6;
-            //    options.Password.RequiredUniqueChars = 1;
-
-            //    // Lockout settings.
-            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            //    options.Lockout.MaxFailedAccessAttempts = 5;
-            //    options.Lockout.AllowedForNewUsers = true;
-
-            //    // User settings.
-            //    options.User.AllowedUserNameCharacters =
-            //    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            //    options.User.RequireUniqueEmail = false;
-            //});
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -125,9 +89,6 @@ namespace pzaleszczyk
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
 
-            
-
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -141,11 +102,10 @@ namespace pzaleszczyk
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
             app.UseRouting();
-            
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization();       
             app.UseSession();
             app.UseEndpoints(endpoints =>
             {
@@ -154,11 +114,17 @@ namespace pzaleszczyk
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+          
             CreateRoles(services).Wait();
+            
+           // HttpContext.Session.SetString("ciasteczko", "");
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
+
+
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
              

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using pzaleszczyk.Validators;
 using System;
 using System.Collections.Generic;
@@ -24,20 +25,22 @@ namespace pzaleszczyk.Models
         [Required]
         public string Surname { get; set; }
 
-        public string Fullname {
-            get { return Name + " " + Surname; }
-        }
+        [NotMapped]
+        public string Fullname => Name + " " + Surname;
 
         public ICollection<Manga> Mangas { get; set; }
 
+        [Website]
         [StringLength(60, MinimumLength = 3)]
         [Required]
-        [Website]
         public string Website { get; set; }
 
         [Display(Name = "Birthday Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Birthday { get; set; }
+
+        
 
     }
 }

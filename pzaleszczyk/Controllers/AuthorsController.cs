@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using pzaleszczyk.Models;
 using pzaleszczyk.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace pzaleszczyk.Controllers
 {
@@ -19,6 +20,16 @@ namespace pzaleszczyk.Controllers
         public AuthorsController(ApplicationDbContext context)
         {
             _context = context;
+
+            //var test_value = "";
+            //HttpContext.Session.TryGetValue(test_value, out var testv);
+
+
+            //test_value = "";
+            //if(testv == null)
+            //{
+            //    HttpContext.Session.SetString(test_value, "");
+            //}
         }
 
         // GET: Authors
